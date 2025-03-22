@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:meal/domain/entities/receipt_entity.dart';
 import 'package:meal/resources/app_color.dart';
 
-import '../../resources/dimens.dart';
+import '../../../resources/dimens.dart';
 
 class ReceiptDetailsScreen extends StatelessWidget {
   final ReceiptEntity receipt;

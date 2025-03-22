@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:meal/blocs/fav/fav_bloc.dart';
 import 'package:meal/resources/dimens.dart';
 import 'package:meal/resources/routes.dart';
 
-import '../../domain/entities/receipt_entity.dart';
+import '../../../domain/entities/receipt_entity.dart';
 
 class ReceiptListWidget extends StatefulWidget {
   final List<ReceiptEntity> listData;
@@ -21,6 +23,7 @@ class _ReceiptListWidgetState extends State<ReceiptListWidget> {
       itemCount: widget.listData.length,
       itemBuilder: (context, index) {
         final item = widget.listData[index];
+        final favoriteBloc = context.read<FavBloc>();
 
         _favorites.putIfAbsent(index, () => false);
 
@@ -29,17 +32,20 @@ class _ReceiptListWidgetState extends State<ReceiptListWidget> {
             goRouter.push(Routes.detailsScreen.path, extra: item);
           },
           child: Card(
-            margin: const EdgeInsets.symmetric(horizontal: kMarginCardMedium_2, vertical: kMarginSmall_2),
+            margin: const EdgeInsets.symmetric(
+                horizontal: kMarginCardMedium_2, vertical: kMarginSmall_2),
             elevation: 2,
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: kMarginMedium_2, horizontal: kMarginCardMedium_2),
+              padding: const EdgeInsets.symmetric(
+                  vertical: kMarginMedium_2, horizontal: kMarginCardMedium_2),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(12),
                     child: Image.network(
-                      item.image ?? "https://spoonacular.com/recipeImages/716429-556x370.jpg",
+                      item.image ??
+                          "https://spoonacular.com/recipeImages/716429-556x370.jpg",
                       width: kMarginExtraLarge_3,
                       height: kMarginExtraLarge_1,
                       fit: BoxFit.fill,
@@ -51,9 +57,8 @@ class _ReceiptListWidgetState extends State<ReceiptListWidget> {
                     ),
                   ),
                   const SizedBox(width: kMarginCardMedium_2),
-
                   Expanded(
-                    flex: 3,
+                    flex: 5,
                     child: Stack(
                       children: [
                         Column(
@@ -70,28 +75,34 @@ class _ReceiptListWidgetState extends State<ReceiptListWidget> {
                             const SizedBox(height: kMarginSmall_2),
                             Text(
                               "${item.extendedIngredients?.length ?? 0} ingredients",
-                              style: const TextStyle(fontWeight: FontWeight.bold),
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
                             ),
                           ],
-                        ),
-                        Positioned(
-                          right: 0,
-                          top: 0,
-                          child: IconButton(
-                            icon: Icon(
-                              _favorites[index] == true ? Icons.favorite : Icons.favorite_border,
-                              color: _favorites[index] == true ? Colors.red : Colors.grey,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _favorites[index] = !(_favorites[index] ?? false);
-                              });
-                            },
-                          ),
                         ),
                       ],
                     ),
                   ),
+
+                  Expanded(child: BlocBuilder<FavBloc, FavState>(
+                    builder: (context, state) {
+                      bool isFav = state.favoriteList.contains(item);
+
+                      return IconButton(
+                        icon: Icon(
+                          isFav ? Icons.favorite : Icons.favorite_border,
+                          color: isFav ? Colors.red : Colors.grey,
+                        ),
+                        onPressed: () {
+                          favoriteBloc.add(
+                            isFav
+                                ? RemoveFavEvent(item)
+                                : AddFavEvent(item),
+                          );
+                        },
+                      );
+                    },
+                  ))
                 ],
               ),
             ),

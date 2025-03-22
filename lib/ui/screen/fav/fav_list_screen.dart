@@ -1,0 +1,18 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:meal/blocs/fav/fav_bloc.dart';
+
+import '../receipt/receipt_list_screen.dart';
+
+class FavouriteListScreen extends StatelessWidget {
+  const FavouriteListScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<FavBloc, FavState>(
+      builder: (context, state) {
+        return ReceiptListWidget(listData: state.favoriteList);
+      },
+    );
+  }
+}

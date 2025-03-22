@@ -4,7 +4,9 @@ import 'package:meal/resources/app_color.dart';
 import 'package:meal/resources/app_strings.dart';
 import 'package:meal/resources/dimens.dart';
 
-import '../widget/receipt_list_widget.dart';
+import 'fav/fav_list_screen.dart';
+import 'mealPlan/mealPlanScreen.dart';
+import 'receipt/receipt_list_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -17,6 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final List<Widget> _tabs = [
     const ReceiptList(),
+    const FavouriteList(),
     const MealPlanList(),
   ];
 
@@ -34,6 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
             unselectedLabelStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.w200, fontSize: textRegular2X),
             tabs: [
               Tab(text: AppStrings.recipe),
+              Tab(text: AppStrings.fav),
               Tab(text: AppStrings.mealPlan),
             ],
           ),
@@ -55,11 +59,20 @@ class ReceiptList extends StatelessWidget {
   }
 }
 
+class FavouriteList extends StatelessWidget {
+  const FavouriteList({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return FavouriteListScreen();
+  }
+}
+
 class MealPlanList extends StatelessWidget {
   const MealPlanList({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ReceiptListWidget(listData: dummyData,);
+    return MealPlanScreen();
   }
 }
