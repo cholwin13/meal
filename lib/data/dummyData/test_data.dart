@@ -120,7 +120,7 @@ List<ReceiptEntity> dummyData = [
   ),
   ReceiptEntity(
     2,
-    "Pasta with Garlic, Scallions, Cauliflower & Breadcrumbs",
+    "Spaghetti Bolognese",
     "https://spoonacular.com/recipeImages/716429-556x370.jpg",
     [
       "lunch",
@@ -140,7 +140,7 @@ List<ReceiptEntity> dummyData = [
   ),
   ReceiptEntity(
     3,
-    "Pasta with Garlic, Scallions, Cauliflower & Breadcrumbs",
+    "Chicken Curry",
     "https://spoonacular.com/recipeImages/716429-556x370.jpg",
     [
       "lunch",
@@ -160,7 +160,7 @@ List<ReceiptEntity> dummyData = [
   ),
   ReceiptEntity(
     4,
-    "Pasta with Garlic, Scallions, Cauliflower & Breadcrumbs",
+    "Chocolate Cake",
     "https://spoonacular.com/recipeImages/716429-556x370.jpg",
     [
       "lunch",

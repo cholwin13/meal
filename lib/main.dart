@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal/blocs/fav/fav_bloc.dart';
+import 'package:meal/blocs/search/search_bloc.dart';
 import 'package:meal/resources/routes.dart';
 
 void main() {
@@ -16,6 +17,9 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => FavBloc(),
+        ),
+        BlocProvider(
+          create: (context) => SearchBloc(),
         ),
         // BlocProvider(
         //   create: (context) => SubjectBloc(),
