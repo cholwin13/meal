@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:meal/data/dummyData/test_data.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal/resources/app_color.dart';
 import 'package:meal/resources/app_strings.dart';
 import 'package:meal/resources/dimens.dart';
 
+import '../../blocs/receipt/receipt_bloc.dart';
+import '../../data/datasource/local/dummyData/test_data.dart';
 import 'fav/fav_list_screen.dart';
 import 'mealPlan/mealPlanScreen.dart';
 import '../widget/receipt_list_widget.dart';
@@ -22,6 +24,12 @@ class _HomeScreenState extends State<HomeScreen> {
     const FavouriteList(),
     const MealPlanList(),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<ReceiptBloc>().add(ReceiptListListEvent("715538", false));
+  }
 
   @override
   Widget build(BuildContext context) {

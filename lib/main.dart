@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal/blocs/fav/fav_bloc.dart';
+import 'package:meal/blocs/receipt/receipt_bloc.dart';
 import 'package:meal/blocs/search/search_bloc.dart';
 import 'package:meal/resources/routes.dart';
 
-void main() {
+import 'injector.dart';
+
+void main() async {
+  await initializeDependencies();
+
   runApp(const MyApp());
 }
 
@@ -21,9 +26,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => SearchBloc(),
         ),
-        // BlocProvider(
-        //   create: (context) => SubjectBloc(),
-        // ),
+        BlocProvider(
+          create: (context) => ReceiptBloc(injector()),
+        ),
       ],
       child: MaterialApp.router(
         routerConfig: goRouter,
