@@ -4,7 +4,7 @@ import 'package:meal/blocs/fav/fav_bloc.dart';
 import 'package:meal/resources/dimens.dart';
 import 'package:meal/resources/routes.dart';
 
-import '../../../domain/entities/receipt_entity.dart';
+import '../../domain/entities/receipt_entity.dart';
 
 class ReceiptListWidget extends StatefulWidget {
   final List<ReceiptEntity> listData;

@@ -6,7 +6,7 @@ import 'package:meal/resources/dimens.dart';
 
 import 'fav/fav_list_screen.dart';
 import 'mealPlan/mealPlanScreen.dart';
-import 'receipt/receipt_list_screen.dart';
+import '../widget/receipt_list_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
