@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:meal/domain/entities/receipt_entity.dart';
 import 'package:meal/resources/app_color.dart';
 
+import '../../../data/modals/receipt/receipt_response.dart';
 import '../../../resources/dimens.dart';
 
 class ReceiptDetailsScreen extends StatelessWidget {
-  final ReceiptEntity receipt;
+  final ReceiptResponse receipt;
   const ReceiptDetailsScreen({super.key, required this.receipt});
 
   @override
@@ -40,7 +41,7 @@ class ReceiptDetailsScreen extends StatelessWidget {
               indicatorColor: context.appColors.colorPrimary,
               tabs: const [
                 Tab(text: "Ingredients"),
-                Tab(text: "Other Info"),
+                Tab(text: "Instruction"),
               ],
             ),
 
@@ -65,9 +66,9 @@ class ReceiptDetailsScreen extends StatelessWidget {
                           subtitle: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("Aisle: ${ingredient?.name ?? ""}"),
-                              Text("Amount: ${ingredient?.amount ?? ""}"),
-                              Text("Consistency: ${ingredient?.consitency ?? ""}"),
+                              Text("Name: ${ingredient?.name ?? ""}"),
+                              Text("Amount: ${ingredient?.amount ?? ""} ${ingredient?.unit ?? ""}"),
+                              Text("Consistency: ${ingredient?.consistency ?? ""}"),
                             ],
                           ),
                         ),
@@ -83,7 +84,7 @@ class ReceiptDetailsScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "${receipt.summary != "" ? receipt.summary : ""}",
+                            "${receipt.instructions != "" ? receipt.instructions : ""}",
                             style: TextStyle(fontSize: textRegular),
                           ),
                         ],

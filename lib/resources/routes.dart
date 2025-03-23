@@ -3,6 +3,8 @@ import 'package:meal/domain/entities/receipt_entity.dart';
 import 'package:meal/ui/screen/homeScreen.dart';
 import 'package:meal/ui/screen/receipt/receipt_details_screen.dart';
 
+import '../data/modals/receipt/receipt_response.dart';
+
 enum Routes {
   home("home", "/"),
   detailsScreen("details", '/details');
@@ -24,7 +26,7 @@ final GoRouter goRouter = GoRouter(
     GoRoute(
       name: Routes.detailsScreen.name,
       path: Routes.detailsScreen.path,
-      builder: (context, state) => ReceiptDetailsScreen(receipt: state.extra as ReceiptEntity),
+      builder: (context, state) => ReceiptDetailsScreen(receipt: state.extra as ReceiptResponse),
     ),
   ],
 );

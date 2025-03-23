@@ -4,10 +4,11 @@ import 'package:meal/blocs/fav/fav_bloc.dart';
 import 'package:meal/resources/dimens.dart';
 import 'package:meal/resources/routes.dart';
 
+import '../../data/modals/receipt/receipt_response.dart';
 import '../../domain/entities/receipt_entity.dart';
 
 class ReceiptListWidget extends StatefulWidget {
-  final List<ReceiptEntity> listData;
+  final List<ReceiptResponse> listData;
   const ReceiptListWidget({super.key, required this.listData});
 
   @override
@@ -16,7 +17,7 @@ class ReceiptListWidget extends StatefulWidget {
 
 class _ReceiptListWidgetState extends State<ReceiptListWidget> {
   String _searchQuery = '';
-  late List<ReceiptEntity> filteredList;
+  late List<ReceiptResponse> filteredList;
 
   @override
   void initState() {

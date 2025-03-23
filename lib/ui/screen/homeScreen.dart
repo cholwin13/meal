@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:meal/core/extensions/dialog_extension.dart';
 import 'package:meal/resources/app_color.dart';
 import 'package:meal/resources/app_strings.dart';
 import 'package:meal/resources/dimens.dart';
@@ -18,7 +19,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   final List<Widget> _tabs = [
     const ReceiptList(),
     const FavouriteList(),
@@ -28,7 +28,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<ReceiptBloc>().add(ReceiptListListEvent("715538", false));
+    context.read<ReceiptBloc>().add(ReceiptListListEvent(
+        "715538,716429,635675, 641836,633858,665553,654679,636177,638893", false));
   }
 
   @override
@@ -41,8 +42,14 @@ class _HomeScreenState extends State<HomeScreen> {
           toolbarHeight: kMarginLarge,
           bottom: TabBar(
             indicatorColor: Colors.white,
-            labelStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: textRegular3X),
-            unselectedLabelStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.w200, fontSize: textRegular2X),
+            labelStyle: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w500,
+                fontSize: textRegular3X),
+            unselectedLabelStyle: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w200,
+                fontSize: textRegular2X),
             tabs: [
               Tab(text: AppStrings.recipe),
               Tab(text: AppStrings.fav),
@@ -50,9 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
         ),
-        body: TabBarView(
-            children: _tabs
-        ),
+        body: TabBarView(children: _tabs),
       ),
     );
   }
@@ -63,7 +68,30 @@ class ReceiptList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ReceiptListWidget(listData: dummyData,);
+    return BlocListener<ReceiptBloc, ReceiptState>(
+      listener: (context, state) {
+        if(state is ReceiptListLoadingState){
+          context.showLoading();
+        }else if(state is ReceiptListSuccessState){
+          context.hideLoading();
+        }else if(state is ReceiptListFailState){
+          context.showLoading();
+        }
+      },
+      child: BlocBuilder<ReceiptBloc, ReceiptState>(
+        buildWhen: (previous, state) {
+          return state is ReceiptListSuccessState;
+        },
+        builder: (context, state) {
+          if (state is ReceiptListSuccessState) {
+            return ReceiptListWidget(
+              listData: state.data,
+            );
+          }
+          return SizedBox();
+        },
+      ),
+    );
   }
 }
 

@@ -5,7 +5,7 @@ abstract class FavEvent extends Equatable{
 }
 
 class AddFavEvent extends FavEvent {
-  final ReceiptEntity receipt;
+  final ReceiptResponse receipt;
 
   const AddFavEvent(this.receipt);
 
@@ -14,7 +14,7 @@ class AddFavEvent extends FavEvent {
 }
 
 class RemoveFavEvent extends FavEvent {
-  final ReceiptEntity receipt;
+  final ReceiptResponse receipt;
 
   const RemoveFavEvent(this.receipt);
 
