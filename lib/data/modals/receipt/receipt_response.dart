@@ -1,6 +1,9 @@
 
+import 'dart:typed_data';
+
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:meal/core/utils/uint8list_converter.dart';
 import 'package:meal/domain/entities/receipt_list_entity.dart';
 
 import 'extendedIngredient.dart';
@@ -118,6 +121,11 @@ class ReceiptResponse {
   @JsonKey(name: 'instructions')
   String? instructions;
 
+  @HiveField(27)
+  @JsonKey(name: 'imageBytes')
+  @Uint8ListConverter()
+  Uint8List? imageBytes;
+
   ReceiptResponse(
       this.id,
       this.image,
@@ -145,39 +153,40 @@ class ReceiptResponse {
       this.sourceName,
       this.pricePerServing,
       this.extendedIngredients,
-      this.instructions);
+      this.instructions,
+      this.imageBytes);
 
   factory ReceiptResponse.fromJson(Map<String, dynamic> json) => _$ReceiptResponseFromJson(json);
 
   Map<String, dynamic> json() => _$ReceiptResponseToJson(this);
 
-  ReceiptListEntity toEntity() => ReceiptListEntity(
-      id: id ?? 0,
-      image: image ?? "",
-      imageType: imageType ?? "",
-      title: title ?? "",
-      readyInMinutes: readyInMinutes ?? 0,
-      servings: servings ?? 0,
-      sourceUrl: sourceUrl ?? "",
-      vegetarian: vegetarian ?? false,
-      vegan: vegan ?? false,
-      glutenFree: glutenFree ?? false,
-      dairyFree: dairyFree ?? false,
-      veryHealthy: veryHealthy ?? false,
-      cheap: cheap ?? false,
-      veryPopular: veryPopular ?? false,
-      sustainable: sustainable ?? false,
-      lowFodmap: lowFodmap ?? false,
-      weightWatcherSmartPoints: weightWatcherSmartPoints ?? 0,
-      gaps: gaps ?? "",
-      preparationMinutes: preparationMinutes ?? 0,
-      cookingMinutes: cookingMinutes ?? 0,
-      aggregateLikes: aggregateLikes ?? 0,
-      healthScore: healthScore ?? 0,
-      creditsText: creditsText ?? "",
-      sourceName: sourceName ?? "",
-      pricePerServing: pricePerServing ?? 0.0,
-      extendedIngredients: extendedIngredients ?? [],
-      instructions: instructions ?? ""
-  );
+// ReceiptListEntity toEntity() => ReceiptListEntity(
+  //     id: id ?? 0,
+  //     image: image ?? "",
+  //     imageType: imageType ?? "",
+  //     title: title ?? "",
+  //     readyInMinutes: readyInMinutes ?? 0,
+  //     servings: servings ?? 0,
+  //     sourceUrl: sourceUrl ?? "",
+  //     vegetarian: vegetarian ?? false,
+  //     vegan: vegan ?? false,
+  //     glutenFree: glutenFree ?? false,
+  //     dairyFree: dairyFree ?? false,
+  //     veryHealthy: veryHealthy ?? false,
+  //     cheap: cheap ?? false,
+  //     veryPopular: veryPopular ?? false,
+  //     sustainable: sustainable ?? false,
+  //     lowFodmap: lowFodmap ?? false,
+  //     weightWatcherSmartPoints: weightWatcherSmartPoints ?? 0,
+  //     gaps: gaps ?? "",
+  //     preparationMinutes: preparationMinutes ?? 0,
+  //     cookingMinutes: cookingMinutes ?? 0,
+  //     aggregateLikes: aggregateLikes ?? 0,
+  //     healthScore: healthScore ?? 0,
+  //     creditsText: creditsText ?? "",
+  //     sourceName: sourceName ?? "",
+  //     pricePerServing: pricePerServing ?? 0.0,
+  //     extendedIngredients: extendedIngredients ?? [],
+  //     instructions: instructions ?? ""
+  // );
 }

@@ -44,13 +44,14 @@ class ReceiptResponseAdapter extends TypeAdapter<ReceiptResponse> {
       fields[24] as double?,
       (fields[25] as List?)?.cast<ExtendedIngredient>(),
       fields[26] as String?,
+      fields[27] as Uint8List?,
     );
   }
 
   @override
   void write(BinaryWriter writer, ReceiptResponse obj) {
     writer
-      ..writeByte(27)
+      ..writeByte(28)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -104,7 +105,9 @@ class ReceiptResponseAdapter extends TypeAdapter<ReceiptResponse> {
       ..writeByte(25)
       ..write(obj.extendedIngredients)
       ..writeByte(26)
-      ..write(obj.instructions);
+      ..write(obj.instructions)
+      ..writeByte(27)
+      ..write(obj.imageBytes);
   }
 
   @override
@@ -153,6 +156,7 @@ ReceiptResponse _$ReceiptResponseFromJson(Map<String, dynamic> json) =>
           ?.map((e) => ExtendedIngredient.fromJson(e as Map<String, dynamic>))
           .toList(),
       json['instructions'] as String?,
+      const Uint8ListConverter().fromJson(json['imageBytes'] as String?),
     );
 
 Map<String, dynamic> _$ReceiptResponseToJson(ReceiptResponse instance) =>
@@ -184,4 +188,5 @@ Map<String, dynamic> _$ReceiptResponseToJson(ReceiptResponse instance) =>
       'pricePerServing': instance.pricePerServing,
       'extendedIngredients': instance.extendedIngredients,
       'instructions': instance.instructions,
+      'imageBytes': const Uint8ListConverter().toJson(instance.imageBytes),
     };

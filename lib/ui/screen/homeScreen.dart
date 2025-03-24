@@ -73,6 +73,7 @@ class ReceiptList extends StatelessWidget {
     var box = Hive.box<ReceiptResponse>('receiptBox');
     List<ReceiptResponse> localData = box.values.toList();
 
+    print("Local Data is Empty --> ${localData.isNotEmpty}");
     return BlocListener<ReceiptBloc, ReceiptState>(
       listener: (context, state) {
         if(state is ReceiptListLoadingState){
@@ -89,6 +90,7 @@ class ReceiptList extends StatelessWidget {
         },
         builder: (context, state) {
           if (state is ReceiptListSuccessState) {
+            print("State Data is ---? ${state.data.isNotEmpty}");
             return ReceiptListWidget(
               listData: state.data,
             );

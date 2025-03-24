@@ -1,9 +1,12 @@
+import 'dart:typed_data';
+
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 import 'package:meal/domain/usecase/receipt_list_usecase.dart';
 import 'package:meta/meta.dart';
+import 'package:http/http.dart' as http;
 
 import '../../data/modals/receipt/receipt_response.dart';
 import '../../domain/entities/receipt_list_entity.dart';
@@ -31,13 +34,38 @@ class ReceiptBloc extends Bloc<ReceiptEvent, ReceiptState> {
     }, (data) async {
       var box = Hive.box<ReceiptResponse>('receiptBox');
       await box.clear();
+
+      // List<ReceiptResponse> updatedReceipts = [];
+
+      // for (var receipt in data) {
+      //   await box.add(receipt);
+      // }
       for (var receipt in data) {
-        await box.add(receipt);
+        if (receipt.image!.isNotEmpty) {
+          final imageBytes = await _downloadImage(receipt.image!);
+          receipt.imageBytes = imageBytes;
+        }
+        // await box.add(receipt);
+        await box.put(receipt.id, receipt);
       }
 
       if (!emit.isDone) return;
       emit(ReceiptListSuccessState(data));
     });
+  }
+
+  Future<Uint8List?> _downloadImage(String imageUrl) async {
+    if (imageUrl.isEmpty) return null;
+
+    try {
+      final response = await http.get(Uri.parse(imageUrl));
+      if (response.statusCode == 200) {
+        return response.bodyBytes;
+      }
+    } catch (e) {
+      print('Image download failed: $e');
+    }
+    return null;
   }
 
 }

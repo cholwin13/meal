@@ -36,7 +36,7 @@ Future<void> initializeDependencies() async {
   );
 
   // dio.interceptors.add(LogInterceptor(responseBody: true));
-  // dio.interceptors.add(LogInterceptor(requestBody: true, responseBody: true));
+  dio.interceptors.add(LogInterceptor(requestBody: true, responseBody: true));
   injector.registerSingleton<Dio>(dio);
   injector.registerSingleton<ApiService>(ApiService(injector()));
 }

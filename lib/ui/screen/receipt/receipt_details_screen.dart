@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:meal/domain/entities/receipt_entity.dart';
 import 'package:meal/resources/app_color.dart';
 
@@ -24,13 +25,33 @@ class ReceiptDetailsScreen extends StatelessWidget {
         ),
         body: Column(
           children: [
-            Container(
-              height: MediaQuery.of(context).size.height * 0.4,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: NetworkImage(receipt.image ?? "https://spoonacular.com/recipeImages/716429-556x370.jpg"),
-                  fit: BoxFit.cover,
+            // Container(
+            //   height: MediaQuery.of(context).size.height * 0.4,
+            //   width: double.infinity,
+            //   decoration: BoxDecoration(
+            //     image: DecorationImage(
+            //       image: NetworkImage(receipt.image ?? "https://spoonacular.com/recipeImages/716429-556x370.jpg"),
+            //       fit: BoxFit.cover,
+            //     ),
+            //   ),
+            // ),
+            ClipRRect(
+              child: receipt.imageBytes != null && receipt.imageBytes!.isNotEmpty
+                  ? Image.memory(
+                receipt.imageBytes!,
+                height: MediaQuery.of(context).size.height * 0.4,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              )
+                  : Image.network(
+                receipt.image ?? "",
+                height: MediaQuery.of(context).size.height * 0.4,
+                width: double.infinity,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) => Icon(
+                  Icons.image_not_supported,
+                  size: 55,
+                  color: Colors.grey,
                 ),
               ),
             ),

@@ -5,6 +5,7 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:meal/blocs/fav/fav_bloc.dart';
 import 'package:meal/blocs/receipt/receipt_bloc.dart';
 import 'package:meal/blocs/search/search_bloc.dart';
+import 'package:meal/core/utils/uint8list_converter.dart';
 import 'package:meal/data/modals/receipt/extendedIngredient.dart';
 import 'package:meal/data/modals/receipt/measure_vo.dart';
 import 'package:meal/data/modals/receipt/metric_vo.dart';
