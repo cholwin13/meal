@@ -25,6 +25,7 @@ void main() async {
   Hive.registerAdapter(MetricAdapter());
 
   await Hive.openBox<ReceiptResponse>('receiptBox');
+  await Hive.openBox<ReceiptResponse>('favoriteBox');
 
   runApp(const MyApp());
 }

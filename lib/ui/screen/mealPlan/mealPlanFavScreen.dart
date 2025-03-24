@@ -1,75 +1,78 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
-import 'package:meal/blocs/fav/fav_bloc.dart';
-import 'package:meal/resources/dimens.dart';
-import 'package:meal/resources/routes.dart';
+import 'package:meal/resources/app_color.dart';
 
-import '../../data/modals/receipt/receipt_response.dart';
-import '../../domain/entities/receipt_entity.dart';
+import '../../../blocs/fav/fav_bloc.dart';
+import '../../../data/modals/receipt/receipt_response.dart';
+import '../../../resources/dimens.dart';
 
-class ReceiptListWidget extends StatefulWidget {
-  final List<ReceiptResponse> listData;
-  const ReceiptListWidget({super.key, required this.listData});
-
+class MealPlanFavScreen extends StatefulWidget {
   @override
-  State<ReceiptListWidget> createState() => _ReceiptListWidgetState();
+  State<MealPlanFavScreen> createState() => _MealPlanFavScreenState();
 }
 
-class _ReceiptListWidgetState extends State<ReceiptListWidget> {
-  String _searchQuery = '';
-  late List<ReceiptResponse> filteredList;
+class _MealPlanFavScreenState extends State<MealPlanFavScreen> {
+  @override
+  Widget build(BuildContext context) {
+    final List<String> favoriteItems = [
+      'Pizza', 'Burger', 'Pasta', 'Salad',
+    ];
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Select Favorite Meal", style: TextStyle(color: Colors.white)),
+        backgroundColor: context.appColors.colorPrimary,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+      ),
+      // body: ListView.builder(
+      //   itemCount: favoriteItems.length,
+      //   itemBuilder: (context, index) {
+      //     return ListTile(
+      //       title: Text(favoriteItems[index]),
+      //       onTap: () {
+      //         Navigator.pop(context, favoriteItems[index]);
+      //       },
+      //     );
+      //   },
+      // ),
+      body: BlocBuilder<FavBloc, FavState>(
+        builder: (context, state) {
+          return MealPlanFavWidget(listData: state.favoriteList);
+        },
+      ),
+    );
+  }
+}
+
+class MealPlanFavWidget extends StatefulWidget {
+  final List<ReceiptResponse> listData;
+  const MealPlanFavWidget({super.key, required this.listData});
 
   @override
-  void initState() {
-    super.initState();
-    filteredList = widget.listData;
-  }
+  State<MealPlanFavWidget> createState() => _ReceiptListWidgetState();
+}
 
-  void _updateSearchResults(String query) {
-    setState(() {
-      _searchQuery = query;
-      filteredList = widget.listData
-          .where((item) =>
-      item.title?.toLowerCase().contains(_searchQuery.toLowerCase()) ??
-          false)
-          .toList();
-    });
-  }
-
+class _ReceiptListWidgetState extends State<MealPlanFavWidget> {
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          child: TextField(
-            onChanged: _updateSearchResults,
-            decoration: InputDecoration(
-              hintText: 'Search recipes...',
-              prefixIcon: const Icon(Icons.search),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
-          ),
-        ),
-
         Expanded(
           child: ListView.builder(
-            // itemCount: widget.listData.length,
-            itemCount: filteredList.length,
+            itemCount: widget.listData.length,
             itemBuilder: (context, index) {
-              // final item = widget.listData[index];
-              final item = filteredList[index];
-              final favoriteBloc = context.read<FavBloc>();
+              final item = widget.listData[index];
 
               return GestureDetector(
                 onTap: () {
-                  goRouter.push(Routes.detailsScreen.path, extra: item);
+                  Navigator.pop(context, item.title);
                 },
                 child: Card(
-                  margin: const EdgeInsets.symmetric(
+                  margin: EdgeInsets.symmetric(
                       horizontal: kMarginCardMedium_2, vertical: kMarginSmall_2),
                   elevation: 2,
                   child: Padding(
@@ -78,21 +81,6 @@ class _ReceiptListWidgetState extends State<ReceiptListWidget> {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // ClipRRect(
-                        //   borderRadius: BorderRadius.circular(12),
-                        //   child: Image.network(
-                        //     item.image ?? "",
-                        //         // "https://spoonacular.com/recipeImages/716429-556x370.jpg",
-                        //     width: kMarginExtraLarge_3,
-                        //     height: kMarginExtraLarge_1,
-                        //     fit: BoxFit.fill,
-                        //     errorBuilder: (context, error, stackTrace) => Icon(
-                        //       Icons.image_not_supported,
-                        //       size: 55,
-                        //       color: Colors.grey,
-                        //     ),
-                        //   ),
-                        // ),
                         ClipRRect(
                           borderRadius: BorderRadius.circular(12),
                           child: FutureBuilder<Box<ReceiptResponse>>(
@@ -104,8 +92,6 @@ class _ReceiptListWidgetState extends State<ReceiptListWidget> {
 
                               final box = snapshot.data!;
                               final receipt = box.get(item.id);
-
-                              print("It it ----> ${receipt?.imageBytes?.isNotEmpty}");
 
                               if (receipt != null && receipt.imageBytes != null) {
                                 return Image.memory(
@@ -150,35 +136,13 @@ class _ReceiptListWidgetState extends State<ReceiptListWidget> {
                                   Text(
                                     "${item.extendedIngredients?.length ?? 0} ingredients",
                                     style:
-                                        const TextStyle(fontWeight: FontWeight.bold),
+                                    const TextStyle(fontWeight: FontWeight.bold),
                                   ),
                                 ],
                               ),
                             ],
                           ),
                         ),
-
-                        Expanded(child: BlocBuilder<FavBloc, FavState>(
-                          builder: (context, state) {
-                            final favoriteBox = Hive.box<ReceiptResponse>('favoriteBox');
-                            bool isFav = favoriteBox.containsKey(item.title);
-                            // bool isFav = state.favoriteList.contains(item);
-
-                            return IconButton(
-                              icon: Icon(
-                                isFav ? Icons.favorite : Icons.favorite_border,
-                                color: isFav ? Colors.red : Colors.grey,
-                              ),
-                              onPressed: () {
-                                favoriteBloc.add(
-                                  isFav
-                                      ? RemoveFavEvent(item)
-                                      : AddFavEvent(item),
-                                );
-                              },
-                            );
-                          },
-                        ))
                       ],
                     ),
                   ),

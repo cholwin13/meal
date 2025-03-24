@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:meal/resources/app_color.dart';
 import 'package:meal/resources/app_strings.dart';
 
+import 'editMealScreen.dart';
+
 class AddMealPlanScreen extends StatefulWidget {
   @override
   _AddMealPlanScreenState createState() => _AddMealPlanScreenState();
@@ -9,44 +11,38 @@ class AddMealPlanScreen extends StatefulWidget {
 
 class _AddMealPlanScreenState extends State<AddMealPlanScreen> {
   final TextEditingController _mealPlanController = TextEditingController();
-  final Map<String, Map<String, TextEditingController>> _mealDetails = {};
+  final Map<String, Map<String, String>> _mealDetails = {};
 
   @override
   void initState() {
     super.initState();
     for (var day in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']) {
-      _mealDetails[day] = {
-        'Breakfast': TextEditingController(),
-        'Lunch': TextEditingController(),
-        'Dinner': TextEditingController(),
-      };
+      _mealDetails[day] = {'Breakfast': '', 'Lunch': '', 'Dinner': ''};
     }
   }
 
   void _saveMealPlan() {
     if (_mealPlanController.text.isNotEmpty) {
-      Map<String, Map<String, String>> mealData = {};
-      _mealDetails.forEach((day, meals) {
-        mealData[day] = {
-          'Breakfast': meals['Breakfast']?.text ?? '',
-          'Lunch': meals['Lunch']?.text ?? '',
-          'Dinner': meals['Dinner']?.text ?? '',
-        };
-      });
-
-      Navigator.pop(context, {'mealPlanTitle': _mealPlanController.text, 'mealData': mealData});
+      Navigator.pop(context, {'mealPlanTitle': _mealPlanController.text, 'mealData': _mealDetails});
     }
   }
 
-  @override
-  void dispose() {
-    _mealPlanController.dispose();
-    _mealDetails.forEach((day, meals) {
-      meals['Breakfast']?.dispose();
-      meals['Lunch']?.dispose();
-      meals['Dinner']?.dispose();
-    });
-    super.dispose();
+  void _navigateToEditMeal(String day) async {
+    final updatedMeals = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EditMealScreen(
+          day: day,
+          initialMeals: Map<String, String>.from(_mealDetails[day]!),
+        ),
+      ),
+    );
+
+    if (updatedMeals != null) {
+      setState(() {
+        _mealDetails[day] = updatedMeals;
+      });
+    }
   }
 
   @override
@@ -80,26 +76,27 @@ class _AddMealPlanScreenState extends State<AddMealPlanScreen> {
                 ),
               ),
               const SizedBox(height: 16),
-              for (var day in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'])
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 16.0),
-                  child: Card(
-                    elevation: 4,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            day,
-                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(height: 8),
-                          _buildMealInputField(day, 'Breakfast'),
-                          _buildMealInputField(day, 'Lunch'),
-                          _buildMealInputField(day, 'Dinner'),
-                        ],
-                      ),
+              for (var day in _mealDetails.keys)
+                Card(
+                  elevation: 4,
+                  child: ListTile(
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(day, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                        IconButton(
+                          icon: Icon(Icons.edit, color: context.appColors.colorPrimary),
+                          onPressed: () => _navigateToEditMeal(day),
+                        )
+                      ],
+                    ),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Breakfast: ${_mealDetails[day]!['Breakfast']}"),
+                        Text("Lunch: ${_mealDetails[day]!['Lunch']}"),
+                        Text("Dinner: ${_mealDetails[day]!['Dinner']}"),
+                      ],
                     ),
                   ),
                 ),
@@ -109,17 +106,5 @@ class _AddMealPlanScreenState extends State<AddMealPlanScreen> {
       ),
     );
   }
-
-  Widget _buildMealInputField(String day, String mealType) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
-      child: TextField(
-        controller: _mealDetails[day]?[mealType],
-        decoration: InputDecoration(
-          labelText: mealType,
-          border: OutlineInputBorder(),
-        ),
-      ),
-    );
-  }
 }
+
