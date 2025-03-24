@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
 import 'package:meal/blocs/fav/fav_bloc.dart';
 import 'package:meal/resources/dimens.dart';
 import 'package:meal/resources/routes.dart';
 
+import '../../data/modals/receipt/receipt_response.dart';
 import '../../domain/entities/receipt_entity.dart';
 
 class ReceiptListWidget extends StatefulWidget {
-  final List<ReceiptEntity> listData;
+  final List<ReceiptResponse> listData;
   const ReceiptListWidget({super.key, required this.listData});
 
   @override
@@ -16,7 +18,7 @@ class ReceiptListWidget extends StatefulWidget {
 
 class _ReceiptListWidgetState extends State<ReceiptListWidget> {
   String _searchQuery = '';
-  late List<ReceiptEntity> filteredList;
+  late List<ReceiptResponse> filteredList;
 
   @override
   void initState() {
@@ -76,19 +78,56 @@ class _ReceiptListWidgetState extends State<ReceiptListWidget> {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        // ClipRRect(
+                        //   borderRadius: BorderRadius.circular(12),
+                        //   child: Image.network(
+                        //     item.image ?? "",
+                        //         // "https://spoonacular.com/recipeImages/716429-556x370.jpg",
+                        //     width: kMarginExtraLarge_3,
+                        //     height: kMarginExtraLarge_1,
+                        //     fit: BoxFit.fill,
+                        //     errorBuilder: (context, error, stackTrace) => Icon(
+                        //       Icons.image_not_supported,
+                        //       size: 55,
+                        //       color: Colors.grey,
+                        //     ),
+                        //   ),
+                        // ),
                         ClipRRect(
                           borderRadius: BorderRadius.circular(12),
-                          child: Image.network(
-                            item.image ??
-                                "https://spoonacular.com/recipeImages/716429-556x370.jpg",
-                            width: kMarginExtraLarge_3,
-                            height: kMarginExtraLarge_1,
-                            fit: BoxFit.fill,
-                            errorBuilder: (context, error, stackTrace) => Icon(
-                              Icons.image_not_supported,
-                              size: 60,
-                              color: Colors.grey,
-                            ),
+                          child: FutureBuilder<Box<ReceiptResponse>>(
+                            future: Hive.openBox<ReceiptResponse>('receiptBox'),
+                            builder: (context, snapshot) {
+                              if (!snapshot.hasData) {
+                                return const CircularProgressIndicator();
+                              }
+
+                              final box = snapshot.data!;
+                              final receipt = box.get(item.id);
+
+                              print("It it ----> ${receipt?.imageBytes?.isNotEmpty}");
+
+                              if (receipt != null && receipt.imageBytes != null) {
+                                return Image.memory(
+                                  receipt.imageBytes!,
+                                  width: kMarginExtraLarge_3,
+                                  height: kMarginExtraLarge_1,
+                                  fit: BoxFit.fill,
+                                );
+                              } else {
+                                return Image.network(
+                                  item.image ?? "",
+                                  width: kMarginExtraLarge_3,
+                                  height: kMarginExtraLarge_1,
+                                  fit: BoxFit.fill,
+                                  errorBuilder: (context, error, stackTrace) => Icon(
+                                    Icons.image_not_supported,
+                                    size: 55,
+                                    color: Colors.grey,
+                                  ),
+                                );
+                              }
+                            },
                           ),
                         ),
                         const SizedBox(width: kMarginCardMedium_2),

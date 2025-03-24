@@ -9,7 +9,7 @@ part of 'fav_bloc.dart';
 // }
 
 class FavState extends Equatable {
-  final List<ReceiptEntity> favoriteList;
+  final List<ReceiptResponse> favoriteList;
 
   const FavState({this.favoriteList = const []});
 

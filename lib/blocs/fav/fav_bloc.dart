@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
+import '../../data/modals/receipt/receipt_response.dart';
 import '../../domain/entities/receipt_entity.dart';
 
 part 'fav_event.dart';
