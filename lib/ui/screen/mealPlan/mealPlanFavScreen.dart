@@ -15,9 +15,6 @@ class MealPlanFavScreen extends StatefulWidget {
 class _MealPlanFavScreenState extends State<MealPlanFavScreen> {
   @override
   Widget build(BuildContext context) {
-    final List<String> favoriteItems = [
-      'Pizza', 'Burger', 'Pasta', 'Salad',
-    ];
 
     return Scaffold(
       appBar: AppBar(
@@ -28,17 +25,6 @@ class _MealPlanFavScreenState extends State<MealPlanFavScreen> {
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
-      // body: ListView.builder(
-      //   itemCount: favoriteItems.length,
-      //   itemBuilder: (context, index) {
-      //     return ListTile(
-      //       title: Text(favoriteItems[index]),
-      //       onTap: () {
-      //         Navigator.pop(context, favoriteItems[index]);
-      //       },
-      //     );
-      //   },
-      // ),
       body: BlocBuilder<FavBloc, FavState>(
         builder: (context, state) {
           return MealPlanFavWidget(listData: state.favoriteList);

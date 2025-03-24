@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:meal/resources/app_color.dart';
 
+import '../../../resources/dimens.dart';
 import 'mealPlanFavScreen.dart';
 
 class EditMealScreen extends StatefulWidget {
@@ -78,7 +79,7 @@ class _EditMealScreenState extends State<EditMealScreen> {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(kMarginMedium_2),
         child: Column(
           children: [
             Row(
@@ -110,7 +111,7 @@ class _EditMealScreenState extends State<EditMealScreen> {
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: kMarginMedium_2),
             Row(
               children: [
                 Expanded(

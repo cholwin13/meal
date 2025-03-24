@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:meal/resources/app_color.dart';
 import 'package:meal/resources/app_strings.dart';
 
+import '../../../resources/dimens.dart';
 import 'editMealScreen.dart';
 
 class AddMealPlanScreen extends StatefulWidget {
@@ -63,7 +64,7 @@ class _AddMealPlanScreenState extends State<AddMealPlanScreen> {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(kMarginMedium_2),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -75,7 +76,7 @@ class _AddMealPlanScreenState extends State<AddMealPlanScreen> {
                   border: OutlineInputBorder(),
                 ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: kMarginMedium_2),
               for (var day in _mealDetails.keys)
                 Card(
                   elevation: 4,
@@ -83,7 +84,7 @@ class _AddMealPlanScreenState extends State<AddMealPlanScreen> {
                     title: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(day, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                        Text(day, style: TextStyle(fontSize: textRegular2X + 2, fontWeight: FontWeight.bold)),
                         IconButton(
                           icon: Icon(Icons.edit, color: context.appColors.colorPrimary),
                           onPressed: () => _navigateToEditMeal(day),

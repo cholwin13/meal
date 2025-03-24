@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meal/resources/app_color.dart';
+import 'package:meal/resources/dimens.dart';
 
 class MealPlanDetailsScreen extends StatelessWidget {
   final Map<String, dynamic> mealPlan;
@@ -20,30 +21,30 @@ class MealPlanDetailsScreen extends StatelessWidget {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(kMarginMedium_2),
         child: ListView(
           children: [
             for (var day in mealData.keys)
               Padding(
-                padding: const EdgeInsets.only(bottom: 16.0),
+                padding: const EdgeInsets.only(bottom: kMarginMedium_2),
                 child: Card(
                   elevation: 4,
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(kMarginSmall_3),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           day,
-                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: context.appColors.colorPrimary),
+                          style: TextStyle(fontSize: textRegular2X + 2, fontWeight: FontWeight.bold, color: context.appColors.colorPrimary),
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: kMarginSmall_3),
                         for (var meal in mealData[day]!.keys)
                           Padding(
-                            padding: const EdgeInsets.only(bottom: 8.0),
+                            padding: const EdgeInsets.only(bottom: kMarginSmall_3),
                             child: Text(
                               '$meal: ${mealData[day]![meal]}',
-                              style: TextStyle(fontSize: 16),
+                              style: TextStyle(fontSize: textRegular2X + 2),
                             ),
                           ),
                       ],

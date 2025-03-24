@@ -95,7 +95,7 @@ class _MealPlanScreenState extends State<MealPlanScreen> {
                       elevation: 2,
                       child: Center(
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          padding: const EdgeInsets.symmetric(horizontal: kMarginSmall),
                           child: Text(
                             mealPlans[index]['mealPlanTitle'],
                             style: TextStyle(fontSize: textRegular, fontWeight: FontWeight.bold, color: context.appColors.colorPrimary),
