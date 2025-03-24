@@ -80,14 +80,14 @@ class _ReceiptListWidgetState extends State<ReceiptListWidget> {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(12),
                           child: Image.network(
-                            item.image ??
-                                "https://spoonacular.com/recipeImages/716429-556x370.jpg",
+                            item.image ?? "",
+                                // "https://spoonacular.com/recipeImages/716429-556x370.jpg",
                             width: kMarginExtraLarge_3,
                             height: kMarginExtraLarge_1,
                             fit: BoxFit.fill,
                             errorBuilder: (context, error, stackTrace) => Icon(
                               Icons.image_not_supported,
-                              size: 60,
+                              size: 55,
                               color: Colors.grey,
                             ),
                           ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
 import 'package:meal/core/extensions/dialog_extension.dart';
 import 'package:meal/resources/app_color.dart';
 import 'package:meal/resources/app_strings.dart';
@@ -7,6 +8,7 @@ import 'package:meal/resources/dimens.dart';
 
 import '../../blocs/receipt/receipt_bloc.dart';
 import '../../data/datasource/local/dummyData/test_data.dart';
+import '../../data/modals/receipt/receipt_response.dart';
 import 'fav/fav_list_screen.dart';
 import 'mealPlan/mealPlanScreen.dart';
 import '../widget/receipt_list_widget.dart';
@@ -68,6 +70,9 @@ class ReceiptList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var box = Hive.box<ReceiptResponse>('receiptBox');
+    List<ReceiptResponse> localData = box.values.toList();
+
     return BlocListener<ReceiptBloc, ReceiptState>(
       listener: (context, state) {
         if(state is ReceiptListLoadingState){
@@ -87,6 +92,8 @@ class ReceiptList extends StatelessWidget {
             return ReceiptListWidget(
               listData: state.data,
             );
+          }else if(localData.isNotEmpty){
+            return ReceiptListWidget(listData: localData);
           }
           return SizedBox();
         },

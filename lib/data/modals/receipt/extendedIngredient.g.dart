@@ -3,6 +3,74 @@
 part of 'extendedIngredient.dart';
 
 // **************************************************************************
+// TypeAdapterGenerator
+// **************************************************************************
+
+class ExtendedIngredientAdapter extends TypeAdapter<ExtendedIngredient> {
+  @override
+  final int typeId = 2;
+
+  @override
+  ExtendedIngredient read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return ExtendedIngredient(
+      fields[0] as int?,
+      fields[1] as String?,
+      fields[2] as String?,
+      fields[3] as String?,
+      fields[4] as String?,
+      fields[5] as String?,
+      fields[6] as String?,
+      fields[7] as String?,
+      fields[8] as double?,
+      fields[9] as String?,
+      fields[10] as MeasuresVO?,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, ExtendedIngredient obj) {
+    writer
+      ..writeByte(11)
+      ..writeByte(0)
+      ..write(obj.id)
+      ..writeByte(1)
+      ..write(obj.aisle)
+      ..writeByte(2)
+      ..write(obj.image)
+      ..writeByte(3)
+      ..write(obj.consistency)
+      ..writeByte(4)
+      ..write(obj.name)
+      ..writeByte(5)
+      ..write(obj.nameClean)
+      ..writeByte(6)
+      ..write(obj.original)
+      ..writeByte(7)
+      ..write(obj.originalName)
+      ..writeByte(8)
+      ..write(obj.amount)
+      ..writeByte(9)
+      ..write(obj.unit)
+      ..writeByte(10)
+      ..write(obj.measures);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ExtendedIngredientAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+// **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 

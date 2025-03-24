@@ -1,4 +1,5 @@
 
+import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meal/domain/entities/receipt_list_entity.dart';
 
@@ -6,86 +7,114 @@ import 'extendedIngredient.dart';
 
 part 'receipt_response.g.dart';
 
+@HiveType(typeId: 1)
 @JsonSerializable()
 class ReceiptResponse {
+  @HiveField(0)
   @JsonKey(name: 'id')
   int? id;
 
+  @HiveField(1)
   @JsonKey(name: 'image')
   String? image;
 
+  @HiveField(2)
   @JsonKey(name: 'imageType')
   String? imageType;
 
+  @HiveField(3)
   @JsonKey(name: 'title')
   String? title;
 
+  @HiveField(4)
   @JsonKey(name: 'readyInMinutes')
   int? readyInMinutes;
 
+  @HiveField(5)
   @JsonKey(name: 'servings')
   int? servings;
 
+  @HiveField(6)
   @JsonKey(name: 'sourceUrl')
   String? sourceUrl;
 
+  @HiveField(7)
   @JsonKey(name: 'vegetarian')
   bool? vegetarian;
 
+  @HiveField(8)
   @JsonKey(name: 'vegan')
   bool? vegan;
 
+  @HiveField(9)
   @JsonKey(name: 'glutenFree')
   bool? glutenFree;
 
+  @HiveField(10)
   @JsonKey(name: 'dairyFree')
   bool? dairyFree;
 
+  @HiveField(11)
   @JsonKey(name: 'veryHealthy')
   bool? veryHealthy;
 
+  @HiveField(12)
   @JsonKey(name: 'cheap')
   bool? cheap;
 
+  @HiveField(13)
   @JsonKey(name: 'veryPopular')
   bool? veryPopular;
 
+  @HiveField(14)
   @JsonKey(name: 'sustainable')
   bool? sustainable;
 
+  @HiveField(15)
   @JsonKey(name: 'lowFodmap')
   bool? lowFodmap;
 
+  @HiveField(16)
   @JsonKey(name: 'weightWatcherSmartPoints')
   int? weightWatcherSmartPoints;
 
+  @HiveField(17)
   @JsonKey(name: 'gaps')
   String? gaps;
 
+  @HiveField(18)
   @JsonKey(name: 'preparationMinutes')
   int? preparationMinutes;
 
+  @HiveField(19)
   @JsonKey(name: 'cookingMinutes')
   int? cookingMinutes;
 
+  @HiveField(20)
   @JsonKey(name: 'aggregateLikes')
   int? aggregateLikes;
 
+  @HiveField(21)
   @JsonKey(name: 'healthScore')
   int? healthScore;
 
+  @HiveField(22)
   @JsonKey(name: 'creditsText')
   String? creditsText;
 
+  @HiveField(23)
   @JsonKey(name: 'sourceName')
   String? sourceName;
 
+  @HiveField(24)
   @JsonKey(name: 'pricePerServing')
   double? pricePerServing;
 
+  @HiveField(25)
   @JsonKey(name: 'extendedIngredients')
   List<ExtendedIngredient>? extendedIngredients;
 
+  @HiveField(26)
   @JsonKey(name: 'instructions')
   String? instructions;
 
