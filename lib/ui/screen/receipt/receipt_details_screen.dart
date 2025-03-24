@@ -77,11 +77,25 @@ class ReceiptDetailsScreen extends StatelessWidget {
                       final ingredient = receipt.extendedIngredients?[index];
                       return Card(
                         child: ListTile(
-                          leading: Image.network(
+                          // leading: Image.network(
+                          //   "https://spoonacular.com/cdn/ingredients_100x100/${ingredient?.image ?? ""}",
+                          //   width: kMarginLargeX,
+                          //   height: kMarginLargeX,
+                          //   errorBuilder: (context, error, stackTrace) => Icon(Icons.image_not_supported),
+                          // ),
+                          leading: ingredient?.imageBytes != null && ingredient!.imageBytes!.isNotEmpty
+                              ? Image.memory(
+                            ingredient.imageBytes!,
+                            width: kMarginLargeX,
+                            height: kMarginLargeX,
+                            fit: BoxFit.cover,
+                          )
+                              : Image.network(
                             "https://spoonacular.com/cdn/ingredients_100x100/${ingredient?.image ?? ""}",
                             width: kMarginLargeX,
                             height: kMarginLargeX,
-                            errorBuilder: (context, error, stackTrace) => Icon(Icons.image_not_supported),
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) => const Icon(Icons.image_not_supported),
                           ),
                           title: Text(ingredient?.aisle ?? ""),
                           subtitle: Column(

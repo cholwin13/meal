@@ -1,5 +1,8 @@
+import 'dart:typed_data';
+
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
+import '../../../core/utils/uint8list_converter.dart';
 import 'measure_vo.dart';
 
 part 'extendedIngredient.g.dart';
@@ -51,6 +54,11 @@ class ExtendedIngredient {
   @JsonKey(name: 'measures')
   MeasuresVO? measures;
 
+  @HiveField(11)
+  @JsonKey(name: 'imageBytes')
+  @Uint8ListConverter()
+  Uint8List? imageBytes;
+
   ExtendedIngredient(
       this.id,
       this.aisle,
@@ -62,7 +70,9 @@ class ExtendedIngredient {
       this.originalName,
       this.amount,
       this.unit,
-      this.measures);
+      this.measures,
+      this.imageBytes
+      );
 
   factory ExtendedIngredient.fromJson(Map<String, dynamic> json) => _$ExtendedIngredientFromJson(json);
 

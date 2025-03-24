@@ -34,9 +34,6 @@ class ReceiptBloc extends Bloc<ReceiptEvent, ReceiptState> {
     }, (data) async {
       var box = Hive.box<ReceiptResponse>('receiptBox');
       await box.clear();
-
-      // List<ReceiptResponse> updatedReceipts = [];
-
       // for (var receipt in data) {
       //   await box.add(receipt);
       // }
@@ -44,6 +41,15 @@ class ReceiptBloc extends Bloc<ReceiptEvent, ReceiptState> {
         if (receipt.image!.isNotEmpty) {
           final imageBytes = await _downloadImage(receipt.image!);
           receipt.imageBytes = imageBytes;
+        }
+
+        if (receipt.extendedIngredients != null) {
+          for (var ingredient in receipt.extendedIngredients!) {
+            if (ingredient.image != null && ingredient.image!.isNotEmpty) {
+              final imageBytes = await _downloadImage("https://spoonacular.com/cdn/ingredients_100x100/${ingredient.image}");
+              ingredient.imageBytes = imageBytes;
+            }
+          }
         }
         // await box.add(receipt);
         await box.put(receipt.id, receipt);

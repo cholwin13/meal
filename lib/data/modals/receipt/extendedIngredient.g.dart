@@ -28,13 +28,14 @@ class ExtendedIngredientAdapter extends TypeAdapter<ExtendedIngredient> {
       fields[8] as double?,
       fields[9] as String?,
       fields[10] as MeasuresVO?,
+      fields[11] as Uint8List?,
     );
   }
 
   @override
   void write(BinaryWriter writer, ExtendedIngredient obj) {
     writer
-      ..writeByte(11)
+      ..writeByte(12)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -56,7 +57,9 @@ class ExtendedIngredientAdapter extends TypeAdapter<ExtendedIngredient> {
       ..writeByte(9)
       ..write(obj.unit)
       ..writeByte(10)
-      ..write(obj.measures);
+      ..write(obj.measures)
+      ..writeByte(11)
+      ..write(obj.imageBytes);
   }
 
   @override
@@ -89,6 +92,7 @@ ExtendedIngredient _$ExtendedIngredientFromJson(Map<String, dynamic> json) =>
       json['measures'] == null
           ? null
           : MeasuresVO.fromJson(json['measures'] as Map<String, dynamic>),
+      const Uint8ListConverter().fromJson(json['imageBytes'] as String?),
     );
 
 Map<String, dynamic> _$ExtendedIngredientToJson(ExtendedIngredient instance) =>
@@ -104,4 +108,5 @@ Map<String, dynamic> _$ExtendedIngredientToJson(ExtendedIngredient instance) =>
       'amount': instance.amount,
       'unit': instance.unit,
       'measures': instance.measures,
+      'imageBytes': const Uint8ListConverter().toJson(instance.imageBytes),
     };
